@@ -1,5 +1,5 @@
 # NavTools
-This is my efforts to create python based tools to assist in shipboard navigational planning
+This is my efforts to create python based tools to assist in shipboard navigational planning. Currently making use of Python, GEOJSON and turfpy.
 
 ## Achieved
 
@@ -19,4 +19,4 @@ Extract tidal data from ECPINS .rte file \
 
 ## Contact
 
-Please do reach out if you have any interest in this, especially if you have Python, ECPINS or general sea navigation experience.
+Please do reach out if you have any interest in this, especially if you have Python, ECPINS or general sea navigation experience. Best way is probably to raise an issue.
