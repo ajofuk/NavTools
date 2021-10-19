@@ -10,8 +10,8 @@ Calculating bearing to a fixed reference point at each count down point
 
 ## To Do
 
-Full test of countdown bearing function
-Calculate length of leg between two waypoints, from steady on course to wheel over point
+Full test of countdown bearing function \
+Calculate length of leg between two waypoints, from steady on course to wheel over point \
 Investigate how to make ECPINS .rfp reference point sets readable
 In lieu of reading ECPINS .rfp reference point sets, create alternative GEOJSON reference point sets
 Calculate head/sternmark 1 degree XTD along leg
