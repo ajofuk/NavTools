@@ -1,0 +1,87 @@
+import re
+import math
+from turfpy.measurement import rhumb_destination, rhumb_bearing
+from geojson import Point, Feature
+
+def get_route_data(rtefile):
+    with open(rtefile, 'rt') as routefile:
+        wps = re.split("waypoints =", routefile.read())
+
+    wps = re.split("turns =", wps[1])
+
+    trns = re.split("pim =", wps[1])
+    trns = re.split("{ ", trns[0])
+    wps = re.split("{ ", wps[0])
+    numwps = len(wps)
+
+    i = 1
+    thisset = {}
+    thisset2 = {}
+    waypoints = {}
+    turns = {}
+    while i < numwps:
+        thisset[i] = re.split('  ', wps[i])
+        thisset2[i] = re.split('  ', trns[i])
+        waypoints[i] = {
+            "lat": float(thisset[i][1]),
+            "long": float(thisset[i][2]),
+            }
+        turns[i] = {
+            "deg": thisset2[i][4],
+            "adv": thisset2[i][2],
+            "trans": thisset2[i][3],
+        }
+        i = i + 1
+    routedata = {
+        "wps": waypoints,
+        "turns": turns,
+    }
+    return routedata
+
+
+routedata = get_route_data('R2018005.rte')
+
+print(routedata['wps'][1]['lat'])
+print(routedata['turns'][2]['deg'])
+
+def dist_new_course(deg, adv, trans):
+    dtnc = adv - trans * math.tan(90-deg)
+    return dtnc
+
+def dtr_points(waypoint, course, dtnc):
+    start = Feature(geometry=Point([waypoint['long'], waypoint['lat']]))
+    distance = dtnc / 2000
+    course = course + 180
+    while course > 180:
+        course = course - 360
+    bearing = course
+    dtrpoints = {}
+    i = 0
+    while i <= 10:
+        dtrpoints[i] = rhumb_destination(start, distance, bearing, {'units': 'naut'})
+        distance = distance + 0.1
+        i = i + 1
+
+    return dtrpoints
+course = 000
+dtnc = 300
+dtrpoints = dtr_points(routedata['wps'][2], course, dtnc)
+print(dtrpoints)
+print(dtrpoints[1]['geometry']['coordinates'][1])
+
+def cd_bearings(dtrpoints, refpoint):
+    bearing = []
+    i = 0
+    while i < 11:
+        start = dtrpoints[i]
+        end = Feature(geometry=Point([refpoint['long'], refpoint['lat']]))
+        bearing.append(rhumb_bearing(start, end))
+        i = i + 1
+    return bearing
+refpoint = {
+    "lat": 50.317437,
+    "long": -4.159046,
+    }
+bearings = cd_bearings(dtrpoints, refpoint)
+print(bearings)
+
