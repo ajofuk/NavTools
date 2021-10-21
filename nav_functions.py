@@ -38,12 +38,6 @@ def get_route_data(rtefile):
     }
     return routedata
 
-
-routedata = get_route_data('R2018005.rte')
-
-print(routedata['wps'][1]['lat'])
-print(routedata['turns'][2]['deg'])
-
 def dist_new_course(deg, adv, trans):
     dtnc = adv - trans * math.tan(90-deg)
     return dtnc
@@ -63,11 +57,6 @@ def dtr_points(waypoint, course, dtnc):
         i = i + 1
 
     return dtrpoints
-course = 000
-dtnc = 300
-dtrpoints = dtr_points(routedata['wps'][2], course, dtnc)
-print(dtrpoints)
-print(dtrpoints[1]['geometry']['coordinates'][1])
 
 def cd_bearings(dtrpoints, refpoint):
     bearing = []
@@ -78,10 +67,5 @@ def cd_bearings(dtrpoints, refpoint):
         bearing.append(rhumb_bearing(start, end))
         i = i + 1
     return bearing
-refpoint = {
-    "lat": 50.317437,
-    "long": -4.159046,
-    }
-bearings = cd_bearings(dtrpoints, refpoint)
-print(bearings)
+
 
