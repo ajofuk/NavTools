@@ -27,9 +27,9 @@ def get_route_data(rtefile):
             "long": float(thisset[i][2]),
             }
         turns[i] = {
-            "deg": thisset2[i][4],
-            "adv": thisset2[i][2],
-            "trans": thisset2[i][3],
+            "deg": float(thisset2[i][4]),
+            "adv": float(thisset2[i][2]),
+            "trans": float(thisset2[i][3]),
         }
         i = i + 1
     routedata = {
@@ -38,8 +38,8 @@ def get_route_data(rtefile):
     }
     return routedata
 
-def dist_new_course(deg, adv, trans):
-    dtnc = adv - trans * math.tan(90-deg)
+def dist_new_course(turn):
+    dtnc = turn['adv'] - turn['trans'] * math.tan(90-turn['deg'])
     return dtnc
 
 def dtr_points(waypoint, course, dtnc):
@@ -67,5 +67,12 @@ def cd_bearings(dtrpoints, refpoint):
         bearing.append(rhumb_bearing(start, end))
         i = i + 1
     return bearing
+
+def leg_course(wpt_start, wpt_end):
+    start = Feature(geometry=Point([wpt_start['long'], wpt_start['lat']]))
+    end = Feature(geometry=Point([wpt_end['long'], wpt_end['lat']]))
+    bearing = rhumb_bearing(start, end)
+    return bearing
+
 
 

@@ -2,7 +2,7 @@ import nav_functions as nf
 
 print("Getting route data from a test route...")
 
-routedata = nf.get_route_data('R2018005.rte')
+routedata = nf.get_route_data('routes/50.317437R2018005.rte')
 
 print("Displaying Latitude of Waypoint 1 and turn angle at waypoint 2. +ve indicates N'ly latitude and clockwise turn")
 print(routedata['wps'][1]['lat'])
